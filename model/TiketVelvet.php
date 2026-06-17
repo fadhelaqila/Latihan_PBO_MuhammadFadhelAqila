@@ -32,8 +32,9 @@ class TiketVelvet extends Tiket {
         return $daftarTiket;
     }
 
+    // [Tahap 5] Overriding hitungTotalHarga - (Surcharge 50% / dikali 1.50)
     public function hitungTotalHarga() {
-        return 0; 
+        return ($this->jumlah_kursi * $this->hargaDasarTiket) * 1.50;
     }
 
     public function tampilkanInfoFasilitas() {

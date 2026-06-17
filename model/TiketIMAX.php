@@ -32,8 +32,9 @@ class TiketIMAX extends Tiket {
         return $daftarTiket;
     }
 
+    // [Tahap 5] Overriding hitungTotalHarga 
     public function hitungTotalHarga() {
-        return 0; 
+        return ($this->jumlah_kursi * $this->hargaDasarTiket) + 35000;
     }
 
     public function tampilkanInfoFasilitas() {

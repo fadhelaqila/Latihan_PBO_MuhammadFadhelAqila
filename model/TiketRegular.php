@@ -34,9 +34,9 @@ class TiketRegular extends Tiket {
         return $daftarTiket;
     }
 
-    // Di Tahap 4 ini, kita wajib mendeklarasikan method dari abstract induknya dulu (isinya kita selesaikan di Tahap 5)
+    // [Tahap 5] Overriding hitungTotalHarga
     public function hitungTotalHarga() {
-        return 0; 
+        return $this->jumlah_kursi * $this->hargaDasarTiket;
     }
 
     public function tampilkanInfoFasilitas() {
