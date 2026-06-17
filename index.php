@@ -1,26 +1,24 @@
 <?php
 // index.php
 
-// 1. Import semua file koneksi dan subclass model yang dibutuhkan
 require_once 'koneksi/database.php';
 require_once 'model/TiketRegular.php';
 require_once 'model/TiketIMAX.php';
 require_once 'model/TiketVelvet.php';
 
-// 2. Buat koneksi ke database
+// Inisialisasi koneksi database
 $database = new Database();
 $db = $database->getConnection();
 
-// 3. Tangkap kata kunci pencarian jika user mengetik sesuatu di kolom Cari (Tahap 6)
+// [Tahap 6] Mengambil kata kunci pencarian dari form input
 $kataKunci = isset($_GET['cari']) ? $_GET['cari'] : '';
 
-// 4. Ambil data spesifik berdasarkan jenisnya lewat Query WHERE masing-masing subclass (Tahap 4)
-// Parameter $kataKunci dilemparkan agar fitur searching langsung menyaring query SQL
+// [Tahap 4] Mengambil data per jenis studio dari database secara OOP
 $dataRegular = TiketRegular::ambilDataBerdasarkanJenis($db, $kataKunci);
 $dataIMAX    = TiketIMAX::ambilDataBerdasarkanJenis($db, $kataKunci);
 $dataVelvet  = TiketVelvet::ambilDataBerdasarkanJenis($db, $kataKunci);
 
-// 5. Gabungkan semua objek tiket ke dalam satu array besar (Konsep Polimorfisme)
+// Menggabungkan semua objek ke dalam satu array besar polimorfisme
 $semuaTiket = array_merge($dataRegular, $dataIMAX, $dataVelvet);
 ?>
 
@@ -36,30 +34,29 @@ $semuaTiket = array_merge($dataRegular, $dataIMAX, $dataVelvet);
 
 <div class="container my-5">
     <div class="card shadow-sm border-0 p-4 mb-4 bg-white text-center">
-        <h2 class="text-primary fw-bold mb-1">🎬 SISTEM MANAJEMEN TIKET CINEMA</h2>
-        <p class="text-muted mb-3">Simulasi UAS PBO - Temuan OOP Komplit</p>
-        <div class="badge bg-secondary p-2 fs-6">Nama: Muhammad Fadhel Aqila</div>
-        <hr class="mt-4">
+        <h2 class="text-primary fw-bold mb-1">🎬 SISTEM INFORMASI TIKET BIOSKOP</h2>
+        <p class="text-muted mb-3">Simulasi UAS PBO - Aplikasi Basis Data Terpadu</p>
+        <div class="badge bg-dark p-2 fs-6 mb-2">Nama: Muhammad Fadhel Aqila</div>
+        <hr>
 
         <form action="" method="GET" class="row g-2 justify-content-center my-2">
             <div class="col-md-6">
-                <input type="text" name="cari" class="form-control form-control-lg" placeholder="Masukkan judul film yang ingin dicari..." value="<?php echo htmlspecialchars($kataKunci); ?>">
+                <input type="text" name="cari" class="form-control" placeholder="Ketik judul film yang ingin dicari..." value="<?php echo htmlspecialchars($kataKunci); ?>">
             </div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-primary btn-lg w-100">🔍 Cari</button>
+                <button type="submit" class="btn btn-primary w-100">🔍 Cari Film</button>
             </div>
             <?php if (!empty($kataKunci)): ?>
                 <div class="col-md-1">
-                    <a href="index.php" class="btn btn-outline-danger btn-lg w-100">Reset</a>
+                    <a href="index.php" class="btn btn-outline-danger w-100">Reset</a>
                 </div>
             <?php endif; ?>
         </form>
     </div>
 
     <div class="card shadow-sm border-0 p-4 bg-white">
-        <h5 class="mb-3 text-secondary fw-bold">Daftar Transaksi Tiket Terdaftar</h5>
         <div class="table-responsive">
-            <table class="table table-hover align-middle">
+            <table class="table table-striped table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
                         <th>ID Tiket</th>
@@ -67,36 +64,34 @@ $semuaTiket = array_merge($dataRegular, $dataIMAX, $dataVelvet);
                         <th>Jadwal Tayang</th>
                         <th>Jumlah Kursi</th>
                         <th>Harga Dasar</th>
-                        <th class="table-primary text-dark text-center">Total Bayar (Override)</th>
-                        <th>Fasilitas & Detail Kelas</th>
+                        <th class="text-success">Total Bayar (Override)</th>
+                        <th>Tipe Kelas & Fasilitas</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (count($semuaTiket) > 0): ?>
                         <?php foreach ($semuaTiket as $tiket): ?>
                             <tr>
-                                <td><strong>#<?php echo $tiket->getIdTiket(); ?></strong></td>
-                                <td class="fw-semibold text-dark"><?php echo $tiket->getNamaFilm(); ?></td>
-                                <td><small class="text-muted"><?php echo $tiket->getJadwalTayang(); ?></small></td>
-                                <td><span class="badge bg-info text-dark px-3 py-2"><?php echo $tiket->getJumlahKursi(); ?> Kursi</span></td>
-                                <td>Rp <?php echo number_format($tiket->getHargaDasar(), 0, ',', '.'); ?></td>
+                                <td><strong>#<?php echo $tiket->id_tiket; ?></strong></td>
+                                <td class="fw-bold text-dark"><?php echo $tiket->nama_film; ?></td>
+                                <td><?php echo $tiket->jadwal_tayang; ?></td>
+                                <td><span class="badge bg-info text-dark"><?php echo $tiket->jumlah_kursi; ?> Kursi</span></td>
+                                <td>Rp <?php echo number_format($tiket->hargaDasarTiket, 0, ',', '.'); ?></td>
                                 
-                                <td class="text-center fw-bold text-success fs-5">
+                                <td class="fw-bold text-success">
                                     Rp <?php echo number_format($tiket->hitungTotalHarga(), 0, ',', '.'); ?>
                                 </td>
                                 
                                 <td>
-                                    <span class="d-block mb-1 fw-bold text-secondary">
-                                        ✨ <?php echo get_class($tiket); ?> </span>
+                                    <span class="badge bg-secondary mb-1"><?php echo get_class($tiket); ?></span>
+                                    <br>
                                     <small class="text-muted"><?php echo $tiket->tampilkanInfoFasilitas(); ?></small>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="7" class="text-center text-danger py-5 fw-semibold">
-                                ❌ Film dengan kata kunci "<strong><?php echo htmlspecialchars($kataKunci); ?></strong>" tidak dapat ditemukan!
-                            </td>
+                            <td colspan="7" class="text-center text-danger py-4">Film "<strong><?php echo htmlspecialchars($kataKunci); ?></strong>" tidak ditemukan.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

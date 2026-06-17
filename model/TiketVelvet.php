@@ -11,7 +11,7 @@ class TiketVelvet extends Tiket {
         if ($db === null) return $daftarTiket;
 
         // Query WHERE khusus untuk mengambil data tiket Velvet
-        $query = "SELECT * FROM db_latihan_pbo WHERE jenis_tiket = 'Velvet'";
+        $query = "SELECT * FROM tabel_tiket WHERE jenis_studio = 'Velvet'";
         
         if (!empty($kataKunci)) {
             $query .= " AND nama_film LIKE '%" . $db->real_escape_string($kataKunci) . "%'";
@@ -26,7 +26,7 @@ class TiketVelvet extends Tiket {
                     $row['nama_film'],
                     $row['jadwal_tayang'],
                     $row['jumlah_kursi'],
-                    $row['harga_dasar_tiket']
+                    $row['hargaDasarTiket']
                 );
             }
         }

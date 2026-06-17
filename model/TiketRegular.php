@@ -9,9 +9,9 @@ class TiketRegular extends Tiket {
     public static function ambilDataBerdasarkanJenis($db, $kataKunci = '') {
         $daftarTiket = [];
         if ($db === null) return $daftarTiket;
-        
-        // Query dasar: Memfilter data berdasarkan jenis_tiket = 'Regular'
-        $query = "SELECT * FROM db_latihan_pbo WHERE jenis_tiket = 'Regular'";
+
+        // Query dasar: Memfilter data berdasarkan jenis_studio = 'Regular'
+        $query = "SELECT * FROM tabel_tiket WHERE jenis_studio = 'Regular'";
         
         // Jika ada pencarian (Tahap 6), kita tambahkan kondisi WHERE ganda dengan AND
         if (!empty($kataKunci)) {
@@ -28,7 +28,7 @@ class TiketRegular extends Tiket {
                     $row['nama_film'],
                     $row['jadwal_tayang'],
                     $row['jumlah_kursi'],
-                    $row['harga_dasar_tiket']
+                    $row['hargaDasarTiket']
                 );
             }
         }

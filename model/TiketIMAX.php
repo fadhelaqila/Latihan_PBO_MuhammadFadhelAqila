@@ -9,9 +9,9 @@ class TiketIMAX extends Tiket {
     public static function ambilDataBerdasarkanJenis($db, $kataKunci = '') {
         $daftarTiket = [];
         if ($db === null) return $daftarTiket;
-        
+
         // Query WHERE khusus untuk mengambil data tiket IMAX
-        $query = "SELECT * FROM db_latihan_pbo WHERE jenis_tiket = 'IMAX'";
+        $query = "SELECT * FROM tabel_tiket WHERE jenis_studio = 'IMAX'";
         
         if (!empty($kataKunci)) {
             $query .= " AND nama_film LIKE '%" . $db->real_escape_string($kataKunci) . "%'";
@@ -26,7 +26,7 @@ class TiketIMAX extends Tiket {
                     $row['nama_film'],
                     $row['jadwal_tayang'],
                     $row['jumlah_kursi'],
-                    $row['harga_dasar_tiket']
+                    $row['hargaDasarTiket']
                 );
             }
         }
