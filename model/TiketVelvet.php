@@ -8,7 +8,8 @@ class TiketVelvet extends Tiket {
     // [Tahap 4] Method Static dengan Query WHERE untuk jenis Velvet
     public static function ambilDataBerdasarkanJenis($db, $kataKunci = '') {
         $daftarTiket = [];
-        
+        if ($db === null) return $daftarTiket;
+
         // Query WHERE khusus untuk mengambil data tiket Velvet
         $query = "SELECT * FROM db_latihan_pbo WHERE jenis_tiket = 'Velvet'";
         
