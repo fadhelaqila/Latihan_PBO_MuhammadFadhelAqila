@@ -8,6 +8,7 @@ class TiketIMAX extends Tiket {
     // [Tahap 4] Method Static dengan Query WHERE untuk jenis IMAX
     public static function ambilDataBerdasarkanJenis($db, $kataKunci = '') {
         $daftarTiket = [];
+        if ($db === null) return $daftarTiket;
         
         // Query WHERE khusus untuk mengambil data tiket IMAX
         $query = "SELECT * FROM db_latihan_pbo WHERE jenis_tiket = 'IMAX'";
