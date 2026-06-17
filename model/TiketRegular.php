@@ -8,6 +8,7 @@ class TiketRegular extends Tiket {
     // [Tahap 4] Method Static dengan Query WHERE sesuai instruksi dosen
     public static function ambilDataBerdasarkanJenis($db, $kataKunci = '') {
         $daftarTiket = [];
+        if ($db === null) return $daftarTiket;
         
         // Query dasar: Memfilter data berdasarkan jenis_tiket = 'Regular'
         $query = "SELECT * FROM db_latihan_pbo WHERE jenis_tiket = 'Regular'";
